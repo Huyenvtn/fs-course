@@ -1,1 +1,1 @@
-# fs-course-project
+# fs-course
