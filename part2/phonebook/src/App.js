@@ -32,7 +32,7 @@ const App = () => {
       window.alert(`${newNumber} is not a phone number`)
     } else {
       if (personUpdate) {
-        const result = window.confirm(`${newName} is already added to phonebook, replace the old number with a new one ?`)
+        const result = window.confirm(`${newName} is already added to phone book, replace the old number with a new one ?`)
         const personObj = {
           id: personUpdate.id,
           name: newName,
@@ -51,7 +51,7 @@ const App = () => {
               setPersons(persons.map(person => person.id !== personUpdate.id ? person : returnedPerson))
             })
             .catch(error => {
-              setMessage(`Information of ${newName} has already been removed from server`)
+              setMessage(error.response.data.error)
               setMessageType('error')
               setShowMessage(true)
               setTimeout(function () {
@@ -77,7 +77,7 @@ const App = () => {
             setPersons(persons.concat(person))
           })
           .catch(error => {
-            setMessage(`ID of ${newName} has duplicated`)
+            setMessage(error.response.data.error)
             setMessageType('error')
             setShowMessage(true)
             setTimeout(function () {
@@ -123,6 +123,14 @@ const App = () => {
               setPersons(personsList)
             })
         })
+        .catch(error => {
+          setMessage(error.response.data.error)
+          setMessageType('error')
+          setShowMessage(true)
+          setTimeout(function () {
+            setShowMessage(false)
+          }, 5000)
+        })
     }
   }
 
@@ -132,7 +140,7 @@ const App = () => {
 
   return (
     <div>
-      <h2>Phonebook</h2>
+      <h2>Phone book</h2>
       {showMessage ? (
         <Notification message={message} classes={messageType}/>): (
         <div></div>
