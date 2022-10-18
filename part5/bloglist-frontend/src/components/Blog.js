@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-const Blog = ({ blog, likeBlog, deleteBlog }) => {
+const Blog = ({ blog, likeBlog, deleteBlog, handleShow }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -15,9 +15,9 @@ const Blog = ({ blog, likeBlog, deleteBlog }) => {
   const [show, setShow] = useState(false)
   useEffect(() => {
   }, [show])
-  const handleShow = (event) => {
+  const handleChangeShow = (event) => {
     event.preventDefault()
-    setShow(!show)
+    setShow(handleShow(show))
   }
 
   const handleUpdateLike = (event) => {
@@ -43,13 +43,13 @@ const Blog = ({ blog, likeBlog, deleteBlog }) => {
     <div style={blogStyle}>
       {show ?
         <div>
-          <div>{blog.title} <button type="submit" onClick={handleShow}>hide</button></div>
+          <div>{blog.title} <button type="submit" onClick={handleChangeShow}>hide</button></div>
           <div>{blog.url}</div>
           <div>likes {blog.likes} <button type="submit" onClick={handleUpdateLike}>like</button></div>
           <div>{blog.author}</div>
           <button style={removeStyle} type="submit" onClick={handleDelete}>remove</button>
         </div> :
-        <div>{blog.title} {blog.author} <button type="submit" onClick={handleShow}>view</button>
+        <div>{blog.title} {blog.author} <button type="submit" onClick={handleChangeShow}>view</button>
         </div>
       }
     </div>

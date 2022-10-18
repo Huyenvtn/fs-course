@@ -124,6 +124,10 @@ const App = () => {
     }
   }
 
+  const handleShow = (show) => {
+    return !show
+  }
+
   const blogFormRef = useRef()
 
   return (
@@ -142,7 +146,7 @@ const App = () => {
         </div>
       }
       <ul>
-        {blogs.map(blog => <Blog key={blog.id} blog={blog} likeBlog={likeBlog} deleteBlog={deleteBlog}/>
+        {blogs.map(blog => <Blog key={blog.id} blog={blog} likeBlog={likeBlog} deleteBlog={deleteBlog} handleShow={handleShow}/>
         )}
       </ul>
     </div>
