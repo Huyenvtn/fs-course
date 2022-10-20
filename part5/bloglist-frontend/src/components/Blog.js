@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-const Blog = ({ blog, likeBlog, deleteBlog, handleShow }) => {
+const Blog = ({ blog, likeBlog, deleteBlog }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -17,7 +17,7 @@ const Blog = ({ blog, likeBlog, deleteBlog, handleShow }) => {
   }, [show])
   const handleChangeShow = (event) => {
     event.preventDefault()
-    setShow(handleShow(show))
+    setShow(!show)
   }
 
   const handleUpdateLike = (event) => {
