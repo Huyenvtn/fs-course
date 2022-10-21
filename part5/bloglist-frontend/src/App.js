@@ -135,7 +135,7 @@ const App = () => {
       <h1>blogs</h1>
       {message !== null && <Notification message={message} classes={messageType}/>}
       {user === null ?
-        <Togglable buttonLabel='Create New Blog'>
+        <Togglable buttonLabel='Login now'>
           <LoginForm handleLogin={login} />
         </Togglable> :
         <div>

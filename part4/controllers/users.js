@@ -21,7 +21,7 @@ userRouter.get('/:id', async (request, response) => {
   response.json(user)
 })
 
-userRouter.post('/', tokenExtractor, async (request, response) => {
+userRouter.post('/', async (request, response) => {
   const { username, password, name, blogs } = request.body
 
   const existingUser = await User.findOne({ username: username })
@@ -43,7 +43,7 @@ userRouter.post('/', tokenExtractor, async (request, response) => {
     username: username,
     password: passwordHash,
     name: name,
-    blogs: blogs,
+    blogs: blogs || [],
   })
   const savedUser = await newUser.save()
   response.status(201).json(savedUser)

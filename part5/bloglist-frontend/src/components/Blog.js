@@ -12,6 +12,9 @@ const Blog = ({ blog, likeBlog, deleteBlog }) => {
     backgroundColor: 'blue',
     color: 'white'
   }
+  const noneList = {
+    listStyleType: 'none'
+  }
   const [show, setShow] = useState(false)
   useEffect(() => {
   }, [show])
@@ -42,15 +45,15 @@ const Blog = ({ blog, likeBlog, deleteBlog }) => {
   return (
     <div style={blogStyle}>
       {show ?
-        <div>
+        <li style={noneList}>
           <div>{blog.title} <button type="submit" onClick={handleChangeShow}>hide</button></div>
           <div>{blog.url}</div>
           <div>likes {blog.likes} <button type="submit" onClick={handleUpdateLike}>like</button></div>
           <div>{blog.author}</div>
           <button style={removeStyle} type="submit" onClick={handleDelete}>remove</button>
-        </div> :
-        <div>{blog.title} {blog.author} <button type="submit" onClick={handleChangeShow}>view</button>
-        </div>
+        </li> :
+        <li style={noneList}>{blog.title} {blog.author} <button type="submit" onClick={handleChangeShow}>view</button>
+        </li>
       }
     </div>
   )
