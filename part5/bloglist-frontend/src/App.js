@@ -37,9 +37,7 @@ const App = () => {
       const user = await loginService.login(obj)
       setUser(user)
       blogService.setToken(user.token)
-      window.localStorage.setItem(
-        'loggedUser', JSON.stringify(user)
-      )
+      window.localStorage.setItem('loggedUser', JSON.stringify(user))
       setMessage('login successful')
       setMessageType('success')
       setTimeout(() => {
@@ -133,21 +131,36 @@ const App = () => {
   return (
     <div>
       <h1>blogs</h1>
-      {message !== null && <Notification message={message} classes={messageType}/>}
-      {user === null ?
-        <Togglable buttonLabel='Login now'>
+      {message !== null && (
+        <Notification message={message} classes={messageType} />
+      )}
+      {user === null ? (
+        <Togglable buttonLabel="Login now">
           <LoginForm handleLogin={login} />
-        </Togglable> :
+        </Togglable>
+      ) : (
         <div>
-          <p>{user.name} logged-in <button type='submit' onClick={handleLogout}>logout</button></p>
-          <Togglable buttonLabel='Create New Blog' ref={blogFormRef}>
+          <p>
+            {user.name} logged-in{' '}
+            <button type="submit" onClick={handleLogout}>
+              logout
+            </button>
+          </p>
+          <Togglable buttonLabel="Create New Blog" ref={blogFormRef}>
             <BlogForm createBlog={addBlog} />
           </Togglable>
         </div>
-      }
+      )}
       <ul>
-        {blogs.map(blog => <Blog key={blog.id} blog={blog} likeBlog={likeBlog} deleteBlog={deleteBlog} handleShow={handleShow}/>
-        )}
+        {blogs.map((blog) => (
+          <Blog
+            key={blog.id}
+            blog={blog}
+            likeBlog={likeBlog}
+            deleteBlog={deleteBlog}
+            handleShow={handleShow}
+          />
+        ))}
       </ul>
     </div>
   )

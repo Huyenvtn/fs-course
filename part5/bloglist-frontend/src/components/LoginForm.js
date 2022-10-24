@@ -7,7 +7,8 @@ const LoginForm = ({ handleLogin }) => {
   const handleSubmitLogin = async (event) => {
     event.preventDefault()
     handleLogin({
-      username, password,
+      username,
+      password,
     })
     setUsername('')
     setPassword('')
@@ -31,7 +32,8 @@ const LoginForm = ({ handleLogin }) => {
             type="text"
             name="username"
             id="username"
-            onChange={handleChangeUsername}></input>
+            onChange={handleChangeUsername}
+          ></input>
         </div>
         <div>
           password
@@ -39,15 +41,18 @@ const LoginForm = ({ handleLogin }) => {
             type="password"
             name="password"
             id="password"
-            onChange={handleChangePassword}></input>
+            onChange={handleChangePassword}
+          ></input>
         </div>
-        <button type='submit' id='login-button'>login</button>
+        <button type="submit" id="login-button">
+          login
+        </button>
       </form>
     </div>
   )
 }
 
 LoginForm.propTypes = {
-  handleLogin: PropTypes.func.isRequired
+  handleLogin: PropTypes.func.isRequired,
 }
 export default LoginForm

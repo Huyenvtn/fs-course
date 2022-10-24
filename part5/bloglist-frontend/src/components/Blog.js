@@ -6,18 +6,17 @@ const Blog = ({ blog, likeBlog, deleteBlog }) => {
     paddingLeft: 2,
     border: 'solid',
     borderWidth: 1,
-    marginBottom: 5
+    marginBottom: 5,
   }
   const removeStyle = {
     backgroundColor: 'blue',
-    color: 'white'
+    color: 'white',
   }
   const noneList = {
-    listStyleType: 'none'
+    listStyleType: 'none',
   }
   const [show, setShow] = useState(false)
-  useEffect(() => {
-  }, [show])
+  useEffect(() => {}, [show])
   const handleChangeShow = (event) => {
     event.preventDefault()
     setShow(!show)
@@ -30,7 +29,7 @@ const Blog = ({ blog, likeBlog, deleteBlog }) => {
       title: blog.title,
       author: blog.author,
       url: blog.url,
-      likes: blog.likes + 1
+      likes: blog.likes + 1,
     }
     likeBlog(blog.id, blogObject)
   }
@@ -44,17 +43,34 @@ const Blog = ({ blog, likeBlog, deleteBlog }) => {
 
   return (
     <div style={blogStyle}>
-      {show ?
+      {show ? (
         <li style={noneList}>
-          <div>{blog.title} <button type="submit" onClick={handleChangeShow}>hide</button></div>
+          <div>
+            {blog.title}{' '}
+            <button type="submit" onClick={handleChangeShow}>
+              hide
+            </button>
+          </div>
           <div>{blog.url}</div>
-          <div>likes {blog.likes} <button type="submit" onClick={handleUpdateLike}>like</button></div>
+          <div>
+            likes {blog.likes}{' '}
+            <button type="submit" onClick={handleUpdateLike}>
+              like
+            </button>
+          </div>
           <div>{blog.author}</div>
-          <button style={removeStyle} type="submit" onClick={handleDelete}>remove</button>
-        </li> :
-        <li style={noneList}>{blog.title} {blog.author} <button type="submit" onClick={handleChangeShow}>view</button>
+          <button style={removeStyle} type="submit" onClick={handleDelete}>
+            remove
+          </button>
         </li>
-      }
+      ) : (
+        <li style={noneList}>
+          {blog.title} {blog.author}{' '}
+          <button type="submit" onClick={handleChangeShow}>
+            view
+          </button>
+        </li>
+      )}
     </div>
   )
 }
