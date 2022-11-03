@@ -1,14 +1,14 @@
-import { useDispatch } from "react-redux"
+import { connect } from "react-redux"
 import { inputSearch } from '../reducers/filterReducer'
 
 const FilterAnecdote = (props) => {
-    const dispatch = useDispatch()
 
     const handleChange = (event) => {
         event.preventDefault()
         const searchText = event.target.value
-        dispatch(inputSearch(searchText))
+        props.inputSearch(searchText)
     }
+    
     const style = {
       marginBottom: 10
     }
@@ -19,5 +19,12 @@ const FilterAnecdote = (props) => {
       </div>
     )
   }
+
+const mapDispatchToProps = {
+  inputSearch,
+}
   
-  export default FilterAnecdote
+export default connect(
+  null,
+  mapDispatchToProps
+)(FilterAnecdote)
