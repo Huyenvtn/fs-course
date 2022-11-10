@@ -9,8 +9,8 @@ const App = () => {
   const [search, setSearch] = useState('')
   const [detail, setDetail] = useState('')
 
-  const handleFilter = (e) => {
-    if (e.target.value !== ''){
+  const handleFilter = e => {
+    if (e.target.value !== '') {
       setSearch(e.target.value)
     } else {
       setSearch('')
@@ -18,18 +18,18 @@ const App = () => {
     }
   }
 
-  const showDetail = (e) => {
+  const showDetail = e => {
     console.log(e.target.value)
     setDetail(e.target.value)
-    if(detail === e.target.value) setDetail('')
+    if (detail === e.target.value) setDetail('')
   }
 
   useEffect(() => {
-    if(search) {
+    if (search) {
       axios
         .get(`https://restcountries.com/v3.1/name/${search}`)
         .then(response => {
-          if (response.data.length <= 10){
+          if (response.data.length <= 10) {
             console.log(response.data)
             setCountries(response.data)
             setLabel('')
@@ -38,7 +38,7 @@ const App = () => {
           }
         })
         .catch(error => {
-          alert("Search value invalid")
+          alert('Search value invalid')
         })
     } else {
       setLabel('')
@@ -60,14 +60,20 @@ const App = () => {
       <div>
         find countries <input value={search} onChange={handleFilter} />
       </div>
-      {label ? label : countries.map(country => {
-        return (
-          <div key={country.name.common}>
-            <Country  name={country.name.common} handleClick={showDetail} />
-            {detail === country.name.common ? <CountryDetail country={country} /> : ''}
-          </div>
-        )
-      })}
+      {label
+        ? label
+        : countries.map(country => {
+            return (
+              <div key={country.name.common}>
+                <Country name={country.name.common} handleClick={showDetail} />
+                {detail === country.name.common ? (
+                  <CountryDetail country={country} />
+                ) : (
+                  ''
+                )}
+              </div>
+            )
+          })}
     </div>
   )
 }

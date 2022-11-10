@@ -8,22 +8,22 @@ const store = createStore(reducer)
 const App = () => {
   const good = () => {
     store.dispatch({
-      type: 'GOOD',
+      type: 'GOOD'
     })
   }
   const ok = () => {
     store.dispatch({
-      type: 'OK',
+      type: 'OK'
     })
   }
   const bad = () => {
     store.dispatch({
-      type: 'BAD',
+      type: 'BAD'
     })
   }
   const zero = () => {
     store.dispatch({
-      type: 'ZERO',
+      type: 'ZERO'
     })
   }
 

@@ -10,7 +10,7 @@ beforeEach(async () => {
   await User.insertMany(helper.initialUsers)
   const user = {
     username: 'dijkstra',
-    password: 'Edsger',
+    password: 'Edsger'
   }
 
   const response = await api.post('/api/login').send(user)
@@ -37,7 +37,7 @@ describe('addition of a new user', () => {
   test('fails with status code 400 if data invalid', async () => {
     const newUser = {
       username: 'dijkstrasai',
-      name: 'Edsger W. Dijkstra',
+      name: 'Edsger W. Dijkstra'
     }
 
     await api
@@ -55,7 +55,7 @@ describe('addition of a new user', () => {
     const newUser = {
       username: 'dijkstrane',
       name: 'Edsger W. Dijkstra',
-      password: 'Edsger',
+      password: 'Edsger'
     }
 
     await api.post('/api/users').send(newUser).expect(401)
@@ -65,7 +65,7 @@ describe('addition of a new user', () => {
     const newUser = {
       username: 'dijkstrane',
       name: 'Edsger W. Dijkstra',
-      password: 'Edsger',
+      password: 'Edsger'
     }
 
     await api
@@ -78,7 +78,7 @@ describe('addition of a new user', () => {
     const usersAtEnd = await helper.usersInDb()
     expect(usersAtEnd).toHaveLength(helper.initialUsers.length + 1)
 
-    const usernames = usersAtEnd.map((r) => r.username)
+    const usernames = usersAtEnd.map(r => r.username)
     expect(usernames).toContain('dijkstrane')
   })
 })
@@ -103,7 +103,7 @@ describe('deletion of a user', () => {
 
     expect(usersAtEnd).toHaveLength(helper.initialUsers.length - 1)
 
-    const usernames = usersAtEnd.map((r) => r.username)
+    const usernames = usersAtEnd.map(r => r.username)
     expect(usernames).not.toContain(userToDelete.username)
   })
 })

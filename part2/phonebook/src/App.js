@@ -6,7 +6,7 @@ import Persons from './components/Persons'
 import Notification from './components/Notification'
 
 const App = () => {
-  const [persons, setPersons] = useState([]) 
+  const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('a new name')
   const [newNumber, setNewNumber] = useState('0123456789')
   const [search, setSearch] = useState('')
@@ -16,27 +16,27 @@ const App = () => {
   const [showMessage, setShowMessage] = useState(false)
 
   useEffect(() => {
-    personService
-      .getAll()
-      .then(personsList => {
-        setPersons(personsList)
-      })
+    personService.getAll().then(personsList => {
+      setPersons(personsList)
+    })
   }, [])
- 
-  const addContact = (e) => {
+
+  const addContact = e => {
     e.preventDefault()
-    const personUpdate = persons.find(person => person.name === newName);
-    const regex = /^\(?([0-9]{2,3})\)?[-. ]?([0-9]{2,3})[-. ]?([0-9]{4,6})$/;
-    
+    const personUpdate = persons.find(person => person.name === newName)
+    const regex = /^\(?([0-9]{2,3})\)?[-. ]?([0-9]{2,3})[-. ]?([0-9]{4,6})$/
+
     if (!newNumber.match(regex)) {
       window.alert(`${newNumber} is not a phone number`)
     } else {
       if (personUpdate) {
-        const result = window.confirm(`${newName} is already added to phone book, replace the old number with a new one ?`)
+        const result = window.confirm(
+          `${newName} is already added to phone book, replace the old number with a new one ?`
+        )
         const personObj = {
           id: personUpdate.id,
           name: newName,
-          number: newNumber,
+          number: newNumber
         }
         if (result) {
           personService
@@ -47,8 +47,12 @@ const App = () => {
               setShowMessage(true)
               setTimeout(function () {
                 setShowMessage(false)
-              }, 5000);
-              setPersons(persons.map(person => person.id !== personUpdate.id ? person : returnedPerson))
+              }, 5000)
+              setPersons(
+                persons.map(person =>
+                  person.id !== personUpdate.id ? person : returnedPerson
+                )
+              )
             })
             .catch(error => {
               setMessage(error.response.data.error)
@@ -63,7 +67,7 @@ const App = () => {
         const personObj = {
           id: persons.length + 1,
           name: newName,
-          number: newNumber,
+          number: newNumber
         }
         personService
           .create(personObj)
@@ -91,16 +95,16 @@ const App = () => {
     }
   }
 
-  const handleNameChange = (e) => {
+  const handleNameChange = e => {
     setNewName(e.target.value)
   }
 
-  const handleNumberChange = (e) => {
+  const handleNumberChange = e => {
     setNewNumber(e.target.value)
   }
 
-  const handleFilter = (e) => {
-    if (e.target.value !== ''){
+  const handleFilter = e => {
+    if (e.target.value !== '') {
       setShowAll(false)
       setSearch(e.target.value)
     } else {
@@ -108,20 +112,18 @@ const App = () => {
     }
   }
 
-  const handleDelete = (e) => {
+  const handleDelete = e => {
     const name = e.target.value
-    const personDelete = persons.find(x => x.name === name);
-    const result = window.confirm(`Delete ${name} ?`);
-    
+    const personDelete = persons.find(x => x.name === name)
+    const result = window.confirm(`Delete ${name} ?`)
+
     if (result) {
       personService
         .remove(personDelete.id)
         .then(res => {
-          personService
-            .getAll()
-            .then(personsList => {
-              setPersons(personsList)
-            })
+          personService.getAll().then(personsList => {
+            setPersons(personsList)
+          })
         })
         .catch(error => {
           setMessage(error.response.data.error)
@@ -136,27 +138,36 @@ const App = () => {
 
   const personsToShow = showAll
     ? persons
-    : persons.filter(person => person.name.toLowerCase().includes(search.toLowerCase()))
+    : persons.filter(person =>
+        person.name.toLowerCase().includes(search.toLowerCase())
+      )
 
   return (
     <div>
       <h2>Phone book</h2>
       {showMessage ? (
-        <Notification message={message} classes={messageType}/>): (
+        <Notification message={message} classes={messageType} />
+      ) : (
         <div></div>
       )}
       <Filter value={search} handleFilter={handleFilter} />
       <h2>add a new</h2>
-      <PersonForm 
-        name={newName} 
-        number={newNumber} 
-        handleNameChange={handleNameChange} 
-        handleNumberChange={handleNumberChange} 
-        addContact={addContact} 
+      <PersonForm
+        name={newName}
+        number={newNumber}
+        handleNameChange={handleNameChange}
+        handleNumberChange={handleNumberChange}
+        addContact={addContact}
       />
       <h2>Numbers</h2>
-      {personsToShow.map(person => (<Persons key={person.id} name={person.name} number={person.number} handleDelete={handleDelete} />)
-      )}
+      {personsToShow.map(person => (
+        <Persons
+          key={person.id}
+          name={person.name}
+          number={person.number}
+          handleDelete={handleDelete}
+        />
+      ))}
     </div>
   )
 }

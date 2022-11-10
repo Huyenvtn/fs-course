@@ -18,7 +18,7 @@ mongoose
   .then(() => {
     logger.info('connected to MongoDB')
   })
-  .catch((error) => {
+  .catch(error => {
     logger.error('error connection to MongoDB:', error.message)
   })
 

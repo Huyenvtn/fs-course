@@ -49,5 +49,5 @@ const userExtractor = async (request, response, next) => {
 module.exports = {
   errorHandler,
   tokenExtractor,
-  userExtractor,
+  userExtractor
 }

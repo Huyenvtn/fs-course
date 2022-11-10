@@ -1,30 +1,26 @@
-import { connect } from "react-redux"
+import { connect } from 'react-redux'
 import { inputSearch } from '../reducers/filterReducer'
 
-const FilterAnecdote = (props) => {
-
-    const handleChange = (event) => {
-        event.preventDefault()
-        const searchText = event.target.value
-        props.inputSearch(searchText)
-    }
-    
-    const style = {
-      marginBottom: 10
-    }
-  
-    return (
-      <div style={style}>
-        filter <input onChange={handleChange} />
-      </div>
-    )
+const FilterAnecdote = props => {
+  const handleChange = event => {
+    event.preventDefault()
+    const searchText = event.target.value
+    props.inputSearch(searchText)
   }
 
-const mapDispatchToProps = {
-  inputSearch,
+  const style = {
+    marginBottom: 10
+  }
+
+  return (
+    <div style={style}>
+      filter <input onChange={handleChange} />
+    </div>
+  )
 }
-  
-export default connect(
-  null,
-  mapDispatchToProps
-)(FilterAnecdote)
+
+const mapDispatchToProps = {
+  inputSearch
+}
+
+export default connect(null, mapDispatchToProps)(FilterAnecdote)

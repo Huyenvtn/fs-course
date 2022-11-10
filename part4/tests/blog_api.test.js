@@ -13,7 +13,7 @@ beforeEach(async () => {
 
   const user = {
     username: 'dijkstra',
-    password: 'Edsger',
+    password: 'Edsger'
   }
   const response = await api.post('/api/login').send(user)
   token = response.body.token
@@ -45,7 +45,7 @@ describe('addition of a new blog', () => {
   test('fails with status code 400 if data invalid', async () => {
     const newBlog = {
       author: 'Edsger W. Dijkstra',
-      likes: 5,
+      likes: 5
     }
 
     await api
@@ -63,7 +63,7 @@ describe('addition of a new blog', () => {
       title: 'Go To Statement Considered Harmful',
       author: 'Edsger W. Dijkstra',
       url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
-      likes: 5,
+      likes: 5
     }
 
     await api.post('/api/blogs').send(newBlog).expect(401)
@@ -74,7 +74,7 @@ describe('addition of a new blog', () => {
       title: 'Go To Statement Considered Harmful',
       author: 'Edsger W. Dijkstra',
       url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
-      likes: 5,
+      likes: 5
     }
 
     await api
@@ -87,7 +87,7 @@ describe('addition of a new blog', () => {
     const blogsAtEnd = await helper.blogsInDb()
     expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
 
-    const titles = blogsAtEnd.map((r) => r.title)
+    const titles = blogsAtEnd.map(r => r.title)
     expect(titles).toContain('Go To Statement Considered Harmful')
   })
 
@@ -95,7 +95,7 @@ describe('addition of a new blog', () => {
     const newBlog = {
       title: 'Go To Statement Considered Harmful',
       author: 'Edsger W. Dijkstra',
-      url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
+      url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html'
     }
 
     await api
@@ -119,7 +119,7 @@ describe('updating a specific blog', () => {
       title: blogToUpdate.title,
       author: blogToUpdate.author,
       url: blogToUpdate.url,
-      likes: 48,
+      likes: 48
     }
     await api.put(`/api/blogs/${blogToUpdate.id}`).send(updateBlog).expect(401)
   })
@@ -131,7 +131,7 @@ describe('updating a specific blog', () => {
       title: blogToUpdate.title,
       author: blogToUpdate.author,
       url: blogToUpdate.url,
-      likes: 48,
+      likes: 48
     }
     const resultBlog = await api
       .put(`/api/blogs/${blogToUpdate.id}`)
@@ -164,7 +164,7 @@ describe('deletion of a blog', () => {
     const blogsAtEnd = await helper.blogsInDb()
     expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length - 1)
 
-    const titles = blogsAtEnd.map((r) => r.title)
+    const titles = blogsAtEnd.map(r => r.title)
     expect(titles).not.toContain(blogToDelete.title)
   })
 })

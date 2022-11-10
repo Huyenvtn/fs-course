@@ -9,7 +9,7 @@ test('renders content', () => {
     title: 'Go To Statement Considered Harmfull',
     author: 'Edsger W. Dijkstraa',
     url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmfull.html',
-    likes: 555,
+    likes: 555
   }
 
   render(<Blog blog={blog} />)
@@ -31,7 +31,7 @@ test('clicking the button calls event handler once', async () => {
     title: 'Go To Statement Considered Harmfull',
     author: 'Edsger W. Dijkstraa',
     url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmfull.html',
-    likes: 555,
+    likes: 555
   }
 
   render(<Blog blog={blog} />)
@@ -53,7 +53,7 @@ test('clicking the button calls event handler once 2 lan', async () => {
     title: 'Go To Statement Considered Harmfull',
     author: 'Edsger W. Dijkstraa',
     url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmfull.html',
-    likes: 555,
+    likes: 555
   }
 
   const mockHandler = jest.fn()

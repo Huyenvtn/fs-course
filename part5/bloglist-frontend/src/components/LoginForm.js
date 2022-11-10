@@ -4,21 +4,21 @@ const LoginForm = ({ handleLogin }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
-  const handleSubmitLogin = async (event) => {
+  const handleSubmitLogin = async event => {
     event.preventDefault()
     handleLogin({
       username,
-      password,
+      password
     })
     setUsername('')
     setPassword('')
   }
 
-  const handleChangeUsername = (event) => {
+  const handleChangeUsername = event => {
     setUsername(event.target.value)
   }
 
-  const handleChangePassword = (event) => {
+  const handleChangePassword = event => {
     setPassword(event.target.value)
   }
 
@@ -29,22 +29,20 @@ const LoginForm = ({ handleLogin }) => {
         <div>
           username
           <input
-            type="text"
-            name="username"
-            id="username"
-            onChange={handleChangeUsername}
-          ></input>
+            type='text'
+            name='username'
+            id='username'
+            onChange={handleChangeUsername}></input>
         </div>
         <div>
           password
           <input
-            type="password"
-            name="password"
-            id="password"
-            onChange={handleChangePassword}
-          ></input>
+            type='password'
+            name='password'
+            id='password'
+            onChange={handleChangePassword}></input>
         </div>
-        <button type="submit" id="login-button">
+        <button type='submit' id='login-button'>
           login
         </button>
       </form>
@@ -53,6 +51,6 @@ const LoginForm = ({ handleLogin }) => {
 }
 
 LoginForm.propTypes = {
-  handleLogin: PropTypes.func.isRequired,
+  handleLogin: PropTypes.func.isRequired
 }
 export default LoginForm

@@ -16,11 +16,10 @@ const App = () => {
   return (
     <div>
       <h2>Anecdotes</h2>
-      { message !== null && <Notification /> }
+      {message !== null && <Notification />}
       <FilterAnecdote />
       <AnecdoteList />
       <AnecdoteForm />
-      
     </div>
   )
 }

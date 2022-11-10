@@ -10,7 +10,7 @@ blogRouter.get('/', async (request, response) => {
 blogRouter.get('/:id', async (request, response) => {
   const blog = await Blog.findById(request.params.id).populate('user', {
     username: 1,
-    name: 1,
+    name: 1
   })
 
   response.json(blog)
@@ -27,7 +27,7 @@ blogRouter.post('/', userExtractor, async (request, response) => {
     author: author,
     url: url,
     likes: likes || 0,
-    user: user.id,
+    user: user.id
   })
   const savedBlog = await blog.save()
 
@@ -43,10 +43,10 @@ blogRouter.put('/:id', userExtractor, async (request, response) => {
     author: author,
     url: url,
     likes: likes || 0,
-    user: user.id,
+    user: user.id
   }
   const savedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, {
-    new: true,
+    new: true
   }).populate('user', { username: 1, name: 1 })
 
   response.json(savedBlog)

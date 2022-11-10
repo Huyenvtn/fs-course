@@ -32,7 +32,7 @@ const App = () => {
     }
   }, [])
 
-  const login = async (obj) => {
+  const login = async obj => {
     try {
       const user = await loginService.login(obj)
       setUser(user)
@@ -59,7 +59,7 @@ const App = () => {
     setUser(null)
   }
 
-  const addBlog = async (blogObject) => {
+  const addBlog = async blogObject => {
     try {
       blogFormRef.current.toggleVisibility()
       const result = await blogService.create(blogObject)
@@ -101,7 +101,7 @@ const App = () => {
     }
   }
 
-  const deleteBlog = async (id) => {
+  const deleteBlog = async id => {
     try {
       await blogService.deleteItem(id)
       const blogs = await blogService.getAll()
@@ -122,7 +122,7 @@ const App = () => {
     }
   }
 
-  const handleShow = (show) => {
+  const handleShow = show => {
     return !show
   }
 
@@ -135,24 +135,24 @@ const App = () => {
         <Notification message={message} classes={messageType} />
       )}
       {user === null ? (
-        <Togglable buttonLabel="Login now">
+        <Togglable buttonLabel='Login now'>
           <LoginForm handleLogin={login} />
         </Togglable>
       ) : (
         <div>
           <p>
             {user.name} logged-in{' '}
-            <button type="submit" onClick={handleLogout}>
+            <button type='submit' onClick={handleLogout}>
               logout
             </button>
           </p>
-          <Togglable buttonLabel="Create New Blog" ref={blogFormRef}>
+          <Togglable buttonLabel='Create New Blog' ref={blogFormRef}>
             <BlogForm createBlog={addBlog} />
           </Togglable>
         </div>
       )}
       <ul>
-        {blogs.map((blog) => (
+        {blogs.map(blog => (
           <Blog
             key={blog.id}
             blog={blog}

@@ -7,7 +7,7 @@ userRouter.get('/', async (request, response) => {
   const users = await User.find({}).populate('blogs', {
     url: 1,
     title: 1,
-    author: 1,
+    author: 1
   })
   response.json(users)
 })
@@ -16,7 +16,7 @@ userRouter.get('/:id', async (request, response) => {
   const user = await User.findById(request.params.id).populate('blogs', {
     url: 1,
     title: 1,
-    author: 1,
+    author: 1
   })
   response.json(user)
 })
@@ -27,13 +27,13 @@ userRouter.post('/', async (request, response) => {
   const existingUser = await User.findOne({ username: username })
   if (existingUser) {
     return response.status(400).json({
-      error: 'username must be unique',
+      error: 'username must be unique'
     })
   }
 
   if (!username || !password || username.length < 3 || password.length < 3) {
     return response.status(400).json({
-      error: 'error invalid with username & password',
+      error: 'error invalid with username & password'
     })
   }
 
@@ -43,7 +43,7 @@ userRouter.post('/', async (request, response) => {
     username: username,
     password: passwordHash,
     name: name,
-    blogs: blogs || [],
+    blogs: blogs || []
   })
   const savedUser = await newUser.save()
   response.status(201).json(savedUser)
@@ -55,10 +55,10 @@ userRouter.put('/:id', tokenExtractor, async (request, response) => {
   const newUser = {
     username: username,
     password: password,
-    name: name,
+    name: name
   }
   const savedUser = await User.findByIdAndUpdate(request.params.id, newUser, {
-    new: true,
+    new: true
   }).populate('blogs', { url: 1, title: 1, author: 1 })
   response.json(savedUser)
 })

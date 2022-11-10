@@ -4,13 +4,13 @@ describe('Blog app', function () {
     const user = {
       username: 'mluukkai',
       password: 'salainen',
-      name: 'Matti Luukkainen',
+      name: 'Matti Luukkainen'
     }
     cy.request('POST', 'http://localhost:3003/api/users/', user)
     const user2 = {
       username: 'mluukkai2',
       password: 'salainen2',
-      name: 'Matti Luukkainen2',
+      name: 'Matti Luukkainen2'
     }
     cy.request('POST', 'http://localhost:3003/api/users/', user2)
     cy.visit('http://localhost:3000')
@@ -66,18 +66,18 @@ describe('Blog app', function () {
         title: 'title of blog 0',
         author: 'mluukkai',
         url: 'http://abc.com',
-        likes: 15,
+        likes: 15
       })
       cy.createBlog({
         title: 'title of blogh 1',
         author: 'mluukkai1',
-        url: 'http://abc1.com',
+        url: 'http://abc1.com'
       })
       cy.createBlog({
         title: 'title of blogg 2',
         author: 'mluukkai2',
         url: 'http://abc2.com',
-        likes: 10,
+        likes: 10
       })
       cy.contains('title of blogh 1 mluukkai1').parent().find('button').click()
       cy.contains('title of blog 0 mluukkai').parent().find('button').click()
@@ -87,7 +87,7 @@ describe('Blog app', function () {
       cy.contains('title of blogh 1')
         .parent()
         .find('button')
-        .then((buttons) => {
+        .then(buttons => {
           cy.wrap(buttons[1]).click()
         })
 
@@ -98,7 +98,7 @@ describe('Blog app', function () {
       cy.contains('title of blogh 1')
         .parent()
         .find('button')
-        .then((buttons) => {
+        .then(buttons => {
           cy.wrap(buttons[2]).click()
         })
       cy.contains('deleting a blog successful')
@@ -110,7 +110,7 @@ describe('Blog app', function () {
       cy.contains('title of blogh 1')
         .parent()
         .find('button')
-        .then((buttons) => {
+        .then(buttons => {
           cy.wrap(buttons[2]).click()
         })
 

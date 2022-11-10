@@ -6,5 +6,5 @@ const URI =
 
 module.exports = {
   PORT,
-  URI,
+  URI
 }

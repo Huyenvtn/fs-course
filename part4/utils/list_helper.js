@@ -1,10 +1,10 @@
-const dummy = (blogs) => {
+const dummy = blogs => {
   return 1
 }
 
-const totalLikes = (blogs) => {
+const totalLikes = blogs => {
   let total = 0
-  blogs.forEach((element) => {
+  blogs.forEach(element => {
     if (element.likes) {
       total += element.likes
     }
@@ -12,7 +12,7 @@ const totalLikes = (blogs) => {
   return total
 }
 
-const favoriteBlog = (blogs) => {
+const favoriteBlog = blogs => {
   let favIndex = 0
   if (blogs && blogs.length > 0) {
     let likes = blogs[0].likes
@@ -25,24 +25,24 @@ const favoriteBlog = (blogs) => {
     const obj = {
       title: blogs[favIndex].title,
       author: blogs[favIndex].author,
-      likes: blogs[favIndex].likes,
+      likes: blogs[favIndex].likes
     }
     return obj
   }
   return {}
 }
 
-const mostBlogs = (blogs) => {
+const mostBlogs = blogs => {
   if (blogs && blogs.length > 0) {
     let arr = []
     let mostObj = {
       author: blogs[0].author,
-      blogs: 1,
+      blogs: 1
     }
     arr.push(mostObj)
 
     for (let i = 1; i < blogs.length; i++) {
-      const idx = arr.findIndex((el) => el.author === blogs[i].author)
+      const idx = arr.findIndex(el => el.author === blogs[i].author)
       if (idx >= 0) {
         arr[idx].blogs = arr[idx].blogs + 1
         if (arr[idx].blogs > mostObj.blogs) {
@@ -59,17 +59,17 @@ const mostBlogs = (blogs) => {
   return {}
 }
 
-const mostLikes = (blogs) => {
+const mostLikes = blogs => {
   if (blogs && blogs.length > 0) {
     let arr = []
     let mostObj = {
       author: blogs[0].author,
-      likes: blogs[0].likes,
+      likes: blogs[0].likes
     }
     arr.push(mostObj)
 
     for (let i = 1; i < blogs.length; i++) {
-      const idx = arr.findIndex((el) => el.author === blogs[i].author)
+      const idx = arr.findIndex(el => el.author === blogs[i].author)
       if (idx >= 0) {
         arr[idx].likes = arr[idx].likes + blogs[i].likes
         if (arr[idx].likes > mostObj.likes) {
@@ -91,5 +91,5 @@ module.exports = {
   totalLikes,
   favoriteBlog,
   mostBlogs,
-  mostLikes,
+  mostLikes
 }
