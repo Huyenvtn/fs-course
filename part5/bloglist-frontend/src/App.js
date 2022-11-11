@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-
+import { useSelector } from 'react-redux'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
@@ -9,9 +9,12 @@ import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
+import { showNotification } from './reducers/notificationReducer'
+
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [message, setMessage] = useState(null)
+  const message = useSelector(state => state.notification)
+  // const [message, setMessage] = useState(null)
   const [messageType, setMessageType] = useState(null)
   const [user, setUser] = useState(null)
 
@@ -38,19 +41,21 @@ const App = () => {
       setUser(user)
       blogService.setToken(user.token)
       window.localStorage.setItem('loggedUser', JSON.stringify(user))
-      setMessage('login successful')
+      showNotification('login successful', 5000)
+      // setMessage('login successful')
       setMessageType('success')
-      setTimeout(() => {
-        setMessage(null)
-        setMessageType(null)
-      }, 5000)
+      // setTimeout(() => {
+      //   setMessage(null)
+      //   setMessageType(null)
+      // }, 5000)
     } catch (exception) {
-      setMessage('Wrong username or password')
+      showNotification('Wrong username or password', 5000)
+      // setMessage('Wrong username or password')
       setMessageType('error')
-      setTimeout(() => {
-        setMessage(null)
-        setMessageType(null)
-      }, 5000)
+      // setTimeout(() => {
+      //   setMessage(null)
+      //   setMessageType(null)
+      // }, 5000)
     }
   }
 
@@ -65,19 +70,24 @@ const App = () => {
       const result = await blogService.create(blogObject)
       const blogs = await blogService.getAll()
       setBlogs(blogs)
-      setMessage(`a new blog ${result.title} by ${result.author} added`)
+      showNotification(
+        `a new blog ${result.title} by ${result.author} added`,
+        5000
+      )
+      // setMessage(`a new blog ${result.title} by ${result.author} added`)
       setMessageType('success')
-      setTimeout(() => {
-        setMessage(null)
-        setMessageType(null)
-      }, 5000)
+      // setTimeout(() => {
+      //   setMessage(null)
+      //   setMessageType(null)
+      // }, 5000)
     } catch (error) {
-      setMessage('create failed')
+      showNotification('create failed', 5000)
+      // setMessage('create failed')
       setMessageType('error')
-      setTimeout(() => {
-        setMessage(null)
-        setMessageType(null)
-      }, 5000)
+      // setTimeout(() => {
+      //   setMessage(null)
+      //   setMessageType(null)
+      // }, 5000)
     }
   }
   const likeBlog = async (id, blogObject) => {
@@ -85,19 +95,24 @@ const App = () => {
       const result = await blogService.update(id, blogObject)
       const blogs = await blogService.getAll()
       setBlogs(blogs)
-      setMessage(`a blog ${result.title} by ${result.author} updated`)
+      showNotification(
+        `a blog ${result.title} by ${result.author} updated`,
+        5000
+      )
+      // setMessage(`a blog ${result.title} by ${result.author} updated`)
       setMessageType('success')
-      setTimeout(() => {
-        setMessage(null)
-        setMessageType(null)
-      }, 5000)
+      // setTimeout(() => {
+      //   setMessage(null)
+      //   setMessageType(null)
+      // }, 5000)
     } catch (error) {
-      setMessage('create failed')
+      showNotification('create failed', 5000)
+      // setMessage('create failed')
       setMessageType('error')
-      setTimeout(() => {
-        setMessage(null)
-        setMessageType(null)
-      }, 5000)
+      // setTimeout(() => {
+      //   setMessage(null)
+      //   setMessageType(null)
+      // }, 5000)
     }
   }
 
@@ -106,19 +121,21 @@ const App = () => {
       await blogService.deleteItem(id)
       const blogs = await blogService.getAll()
       setBlogs(blogs)
-      setMessage('deleting a blog successful')
+      showNotification('deleting a blog successful', 5000)
+      // setMessage('deleting a blog successful')
       setMessageType('success')
-      setTimeout(() => {
-        setMessage(null)
-        setMessageType(null)
-      }, 5000)
+      // setTimeout(() => {
+      //   setMessage(null)
+      //   setMessageType(null)
+      // }, 5000)
     } catch (error) {
-      setMessage('deleting a blog failed')
+      showNotification('deleting a blog failed', 5000)
+      // setMessage('deleting a blog failed')
       setMessageType('error')
-      setTimeout(() => {
-        setMessage(null)
-        setMessageType(null)
-      }, 5000)
+      // setTimeout(() => {
+      //   setMessage(null)
+      //   setMessageType(null)
+      // }, 5000)
     }
   }
 
