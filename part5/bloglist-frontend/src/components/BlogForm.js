@@ -1,20 +1,11 @@
-import { useState } from 'react'
-const BlogForm = ({ createBlog }) => {
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
-
-  const handleTitleChange = event => {
-    setTitle(event.target.value)
-  }
-
-  const handleAuthorChange = event => {
-    setAuthor(event.target.value)
-  }
-
-  const handleUrlChange = event => {
-    setUrl(event.target.value)
-  }
+// import { useState } from 'react'
+import { connect } from 'react-redux'
+import { useField } from '../hooks'
+import { addBlog } from '../reducers/blogReducer'
+const BlogForm = props => {
+  const { clear: clearTitle, ...title } = useField('title')
+  const { clear: clearAuthor, ...author } = useField('author')
+  const { clear: clearUrl, ...url } = useField('url')
 
   const handleAdd = async event => {
     event.preventDefault()
@@ -23,10 +14,35 @@ const BlogForm = ({ createBlog }) => {
       author: author,
       url: url
     }
-    createBlog(blogObject)
-    setTitle('')
-    setAuthor('')
-    setUrl('')
+    props.addBlog(blogObject)
+    try {
+      blogFormRef.current.toggleVisibility()
+      // const result = await blogService.create(blogObject)
+      // const blogs = await blogService.getAll()
+      // setBlogs(blogs)
+      showNotification(
+        `a new blog ${result.title} by ${result.author} added`,
+        5000
+      )
+      // setMessage(`a new blog ${result.title} by ${result.author} added`)
+      setMessageType('success')
+      // setTimeout(() => {
+      //   setMessage(null)
+      //   setMessageType(null)
+      // }, 5000)
+    } catch (error) {
+      showNotification('create failed', 5000)
+      // setMessage('create failed')
+      setMessageType('error')
+      // setTimeout(() => {
+      //   setMessage(null)
+      //   setMessageType(null)
+      // }, 5000)
+    }
+
+    clearTitle()
+    clearAuthor()
+    clearUrl()
   }
 
   return (
@@ -35,30 +51,15 @@ const BlogForm = ({ createBlog }) => {
       <form onSubmit={handleAdd}>
         <div>
           title:
-          <input
-            type='text'
-            name='title'
-            id='title'
-            value={title}
-            onChange={handleTitleChange}></input>
+          <input {...title} />
         </div>
         <div>
           author:
-          <input
-            type='text'
-            name='author'
-            id='author'
-            value={author}
-            onChange={handleAuthorChange}></input>
+          <input {...author} />
         </div>
         <div>
           url:
-          <input
-            type='text'
-            name='url'
-            id='url'
-            value={url}
-            onChange={handleUrlChange}></input>
+          <input {...url} />
         </div>
         <button type='submit' id='create-button'>
           create
@@ -68,4 +69,8 @@ const BlogForm = ({ createBlog }) => {
   )
 }
 
-export default BlogForm
+const mapDispatchToProps = {
+  addBlog
+}
+
+export default connect(null, mapDispatchToProps)(BlogForm)

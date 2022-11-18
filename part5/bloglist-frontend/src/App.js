@@ -1,10 +1,11 @@
 import { useState, useEffect, useRef } from 'react'
-import { useSelector } from 'react-redux'
-import Blog from './components/Blog'
+import { useDispatch, useSelector } from 'react-redux'
+import BlogList from './components/BlogList'
 import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
+import { initializeBlogs } from './reducers/blogReducer'
 
 import blogService from './services/blogs'
 import loginService from './services/login'
@@ -12,19 +13,20 @@ import loginService from './services/login'
 import { showNotification } from './reducers/notificationReducer'
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
   const message = useSelector(state => state.notification)
+  const dispatch = useDispatch()
   // const [message, setMessage] = useState(null)
   const [messageType, setMessageType] = useState(null)
   const [user, setUser] = useState(null)
 
   useEffect(() => {
-    const fetchData = async () => {
-      const data = await blogService.getAll()
-      setBlogs(data)
-    }
-    fetchData()
-  }, [])
+    dispatch(initializeBlogs())
+    // const fetchData = async () => {
+    //   const data = await blogService.getAll()
+    //   setBlogs(data)
+    // }
+    // fetchData()
+  }, [dispatch])
 
   useEffect(() => {
     const loggedUser = window.localStorage.getItem('loggedUser')
@@ -42,20 +44,8 @@ const App = () => {
       blogService.setToken(user.token)
       window.localStorage.setItem('loggedUser', JSON.stringify(user))
       showNotification('login successful', 5000)
-      // setMessage('login successful')
-      setMessageType('success')
-      // setTimeout(() => {
-      //   setMessage(null)
-      //   setMessageType(null)
-      // }, 5000)
     } catch (exception) {
       showNotification('Wrong username or password', 5000)
-      // setMessage('Wrong username or password')
-      setMessageType('error')
-      // setTimeout(() => {
-      //   setMessage(null)
-      //   setMessageType(null)
-      // }, 5000)
     }
   }
 
@@ -67,9 +57,9 @@ const App = () => {
   const addBlog = async blogObject => {
     try {
       blogFormRef.current.toggleVisibility()
-      const result = await blogService.create(blogObject)
-      const blogs = await blogService.getAll()
-      setBlogs(blogs)
+      // const result = await blogService.create(blogObject)
+      // const blogs = await blogService.getAll()
+      // setBlogs(blogs)
       showNotification(
         `a new blog ${result.title} by ${result.author} added`,
         5000
@@ -89,58 +79,6 @@ const App = () => {
       //   setMessageType(null)
       // }, 5000)
     }
-  }
-  const likeBlog = async (id, blogObject) => {
-    try {
-      const result = await blogService.update(id, blogObject)
-      const blogs = await blogService.getAll()
-      setBlogs(blogs)
-      showNotification(
-        `a blog ${result.title} by ${result.author} updated`,
-        5000
-      )
-      // setMessage(`a blog ${result.title} by ${result.author} updated`)
-      setMessageType('success')
-      // setTimeout(() => {
-      //   setMessage(null)
-      //   setMessageType(null)
-      // }, 5000)
-    } catch (error) {
-      showNotification('create failed', 5000)
-      // setMessage('create failed')
-      setMessageType('error')
-      // setTimeout(() => {
-      //   setMessage(null)
-      //   setMessageType(null)
-      // }, 5000)
-    }
-  }
-
-  const deleteBlog = async id => {
-    try {
-      await blogService.deleteItem(id)
-      const blogs = await blogService.getAll()
-      setBlogs(blogs)
-      showNotification('deleting a blog successful', 5000)
-      // setMessage('deleting a blog successful')
-      setMessageType('success')
-      // setTimeout(() => {
-      //   setMessage(null)
-      //   setMessageType(null)
-      // }, 5000)
-    } catch (error) {
-      showNotification('deleting a blog failed', 5000)
-      // setMessage('deleting a blog failed')
-      setMessageType('error')
-      // setTimeout(() => {
-      //   setMessage(null)
-      //   setMessageType(null)
-      // }, 5000)
-    }
-  }
-
-  const handleShow = show => {
-    return !show
   }
 
   const blogFormRef = useRef()
@@ -168,7 +106,8 @@ const App = () => {
           </Togglable>
         </div>
       )}
-      <ul>
+      <BlogList />
+      {/* <ul>
         {blogs.map(blog => (
           <Blog
             key={blog.id}
@@ -178,7 +117,7 @@ const App = () => {
             handleShow={handleShow}
           />
         ))}
-      </ul>
+      </ul> */}
     </div>
   )
 }

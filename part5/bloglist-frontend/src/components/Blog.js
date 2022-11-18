@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react'
+import { connect } from 'react-redux'
+import { likeBlog, removeBlog } from '../reducers/blogReducer'
+import { showNotification } from '../reducers/notificationReducer'
 
-const Blog = ({ blog, likeBlog, deleteBlog }) => {
+const Blog = props => {
+  const blog = props.blog
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -24,20 +28,27 @@ const Blog = ({ blog, likeBlog, deleteBlog }) => {
 
   const handleUpdateLike = event => {
     event.preventDefault()
-    const blogObject = {
-      user: blog.user,
-      title: blog.title,
-      author: blog.author,
-      url: blog.url,
-      likes: blog.likes + 1
+
+    try {
+      const result = props.likeBlog(blog.id)
+      props.showNotification(
+        `a blog ${result.title} by ${result.author} updated`,
+        5000
+      )
+    } catch (error) {
+      props.showNotification('create failed', 5000)
     }
-    likeBlog(blog.id, blogObject)
   }
 
   const handleDelete = event => {
     event.preventDefault()
     if (window.confirm('Do you really want to delete?')) {
-      deleteBlog(blog.id)
+      try {
+        props.removeBlog(blog.id)
+        props.showNotification('deleting a blog successful', 5000)
+      } catch (error) {
+        props.showNotification('deleting a blog failed', 5000)
+      }
     }
   }
 
@@ -75,4 +86,10 @@ const Blog = ({ blog, likeBlog, deleteBlog }) => {
   )
 }
 
-export default Blog
+const mapDispatchToProps = {
+  likeBlog,
+  removeBlog,
+  showNotification
+}
+
+export default connect(null, mapDispatchToProps)(Blog)
