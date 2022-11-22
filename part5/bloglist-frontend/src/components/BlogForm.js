@@ -1,7 +1,7 @@
-// import { useState } from 'react'
 import { connect } from 'react-redux'
 import { useField } from '../hooks'
 import { addBlog } from '../reducers/blogReducer'
+import { showNotification } from '../reducers/notificationReducer'
 const BlogForm = props => {
   const { clear: clearTitle, ...title } = useField('title')
   const { clear: clearAuthor, ...author } = useField('author')
@@ -10,34 +10,22 @@ const BlogForm = props => {
   const handleAdd = async event => {
     event.preventDefault()
     const blogObject = {
-      title: title,
-      author: author,
-      url: url
+      title: title.value,
+      author: author.value,
+      url: url.value
     }
-    props.addBlog(blogObject)
     try {
-      blogFormRef.current.toggleVisibility()
-      // const result = await blogService.create(blogObject)
-      // const blogs = await blogService.getAll()
-      // setBlogs(blogs)
-      showNotification(
+      const result = props.addBlog(blogObject)
+
+      props.blogFormRef.current.toggleVisibility()
+      props.showNotification(
         `a new blog ${result.title} by ${result.author} added`,
         5000
       )
-      // setMessage(`a new blog ${result.title} by ${result.author} added`)
-      setMessageType('success')
-      // setTimeout(() => {
-      //   setMessage(null)
-      //   setMessageType(null)
-      // }, 5000)
+      //  setMessageType('success')
     } catch (error) {
-      showNotification('create failed', 5000)
-      // setMessage('create failed')
-      setMessageType('error')
-      // setTimeout(() => {
-      //   setMessage(null)
-      //   setMessageType(null)
-      // }, 5000)
+      props.showNotification('create failed', 5000)
+      // setMessageType('error')
     }
 
     clearTitle()
@@ -70,7 +58,8 @@ const BlogForm = props => {
 }
 
 const mapDispatchToProps = {
-  addBlog
+  addBlog,
+  showNotification
 }
 
 export default connect(null, mapDispatchToProps)(BlogForm)

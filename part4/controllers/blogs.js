@@ -22,6 +22,9 @@ blogRouter.post('/', userExtractor, async (request, response) => {
     return response.status(400).end()
   }
   const user = request.user
+    ? request.user
+    : window.localStorage.getItem('loggedUser')
+  console.log(user)
   const blog = new Blog({
     title: title,
     author: author,
