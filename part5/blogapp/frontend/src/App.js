@@ -7,7 +7,7 @@ import NewBlogForm from './components/NewBlogForm'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 
-import blogService from './services/blogs'
+// import blogService from './services/blogs'
 import loginService from './services/login'
 import userService from './services/user'
 
@@ -16,13 +16,14 @@ import {
   initializeBlogs,
   setBlogs,
   addBlog,
-  deleteBlog
+  deleteBlog,
+  updateLikeBlog
 } from './reducers/blogReducer'
 
 const App = props => {
   const [user, setUser] = useState(null)
   const blogFormRef = useRef()
-  const byLikes = (b1, b2) => (b2.likes > b1.likes ? 1 : -1)
+  // const byLikes = (b1, b2) => (b2.likes > b1.likes ? 1 : -1)
 
   useEffect(() => {
     props.initializeBlogs()
@@ -82,19 +83,15 @@ const App = props => {
 
   const likeBlog = async id => {
     const toLike = props.blogs.find(b => b.id === id)
+    console.log(toLike.user.id)
     const liked = {
       ...toLike,
       likes: (toLike.likes || 0) + 1,
-      user: toLike.user.id
+      user: toLike.user ? toLike.user.id : ''
     }
 
-    blogService.update(liked.id, liked).then(updatedBlog => {
-      notify(`you liked '${updatedBlog.title}' by ${updatedBlog.author}`)
-      const updatedBlogs = props.blogs
-        .map(b => (b.id === id ? updatedBlog : b))
-        .sort(byLikes)
-      props.setBlogs(updatedBlogs)
-    })
+    props.updateLikeBlog(liked.id, liked)
+    notify(`you liked '${liked.title}' by ${liked.author}`)
   }
 
   const notify = (message, type = 'info') => {
@@ -151,7 +148,8 @@ const mapDispatchToProps = {
   setBlogs,
   initializeBlogs,
   addBlog,
-  deleteBlog
+  deleteBlog,
+  updateLikeBlog
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)
