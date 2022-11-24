@@ -18,8 +18,7 @@ const blogSlice = createSlice({
       const blogToChange = state.find(item => item.id === id)
       const changedBlog = {
         ...blogToChange,
-        likes: (blogToChange.likes || 0) + 1,
-        user: blogToChange.user.id
+        likes: (blogToChange.likes || 0) + 1
       }
       return state
         .map(blog => (blog.id !== id ? blog : changedBlog))

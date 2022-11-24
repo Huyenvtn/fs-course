@@ -1,15 +1,11 @@
 import { connect } from 'react-redux'
-import { useState, useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 
 import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
 import NewBlogForm from './components/NewBlogForm'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
-
-// import blogService from './services/blogs'
-import loginService from './services/login'
-import userService from './services/user'
 
 import { showNotification } from './reducers/notificationReducer'
 import {
@@ -19,42 +15,34 @@ import {
   deleteBlog,
   updateLikeBlog
 } from './reducers/blogReducer'
+import {
+  initializeUser,
+  setSignedInUser,
+  removeSignedInUser
+} from './reducers/userReducer'
 
 const App = props => {
-  const [user, setUser] = useState(null)
   const blogFormRef = useRef()
-  // const byLikes = (b1, b2) => (b2.likes > b1.likes ? 1 : -1)
 
   useEffect(() => {
     props.initializeBlogs()
   }, [])
 
   useEffect(() => {
-    const userFromStorage = userService.getUser()
-    if (userFromStorage) {
-      setUser(userFromStorage)
-    }
+    props.initializeUser()
   }, [])
 
   const login = async (username, password) => {
-    loginService
-      .login({
-        username,
-        password
-      })
-      .then(user => {
-        setUser(user)
-        userService.setUser(user)
-        notify(`${user.name} logged in!`)
-      })
-      .catch(() => {
-        notify('wrong username/password', 'alert')
-      })
+    try {
+      await props.setSignedInUser(username, password)
+      notify(`${username} logged in!`)
+    } catch (e) {
+      notify('wrong username/password', 'alert')
+    }
   }
 
   const logout = () => {
-    setUser(null)
-    userService.clearUser()
+    props.removeSignedInUser()
     notify('good bye!')
   }
 
@@ -70,7 +58,6 @@ const App = props => {
 
   const removeBlog = id => {
     const toRemove = props.blogs.find(b => b.id === id)
-
     const ok = window.confirm(
       `remove '${toRemove.title}' by ${toRemove.author}?`
     )
@@ -83,7 +70,6 @@ const App = props => {
 
   const likeBlog = async id => {
     const toLike = props.blogs.find(b => b.id === id)
-    console.log(toLike.user.id)
     const liked = {
       ...toLike,
       likes: (toLike.likes || 0) + 1,
@@ -98,7 +84,7 @@ const App = props => {
     props.showNotification({ message, type }, 5000)
   }
 
-  if (user === null) {
+  if (props.user === null) {
     return (
       <>
         <Notification notification={props.notification} />
@@ -114,7 +100,7 @@ const App = props => {
       <Notification notification={props.notification} />
 
       <div>
-        {user.name} logged in
+        {props.user.name} logged in
         <button onClick={logout}>logout</button>
       </div>
 
@@ -129,7 +115,7 @@ const App = props => {
             blog={blog}
             likeBlog={likeBlog}
             removeBlog={removeBlog}
-            user={user}
+            user={props.user}
           />
         ))}
       </div>
@@ -140,7 +126,8 @@ const App = props => {
 const mapStateToProps = state => {
   return {
     notification: state.notification,
-    blogs: state.blogs
+    blogs: state.blogs,
+    user: state.user
   }
 }
 const mapDispatchToProps = {
@@ -149,7 +136,10 @@ const mapDispatchToProps = {
   initializeBlogs,
   addBlog,
   deleteBlog,
-  updateLikeBlog
+  updateLikeBlog,
+  setSignedInUser,
+  initializeUser,
+  removeSignedInUser
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)

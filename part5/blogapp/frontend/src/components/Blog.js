@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 
 const BlogDetails = ({ blog, visible, likeBlog, removeBlog, own }) => {
   if (!visible) return null
-
   const addedBy = blog.user && blog.user.name ? blog.user.name : 'anonymous'
 
   return (
