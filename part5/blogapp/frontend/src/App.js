@@ -1,11 +1,15 @@
 import { connect } from 'react-redux'
 import { useEffect, useRef } from 'react'
+import { Container } from '@mui/material'
+import { Route, Routes } from 'react-router-dom'
 
 import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
 import NewBlogForm from './components/NewBlogForm'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
+import Users from './components/Users'
+import User from './components/User'
 
 import { showNotification } from './reducers/notificationReducer'
 import {
@@ -94,7 +98,7 @@ const App = props => {
   }
 
   return (
-    <div>
+    <Container>
       <h2>blogs</h2>
 
       <Notification notification={props.notification} />
@@ -119,7 +123,11 @@ const App = props => {
           />
         ))}
       </div>
-    </div>
+      <Users />
+      <Routes>
+        <Route path='/users/:id' element={<User />} />
+      </Routes>
+    </Container>
   )
 }
 
