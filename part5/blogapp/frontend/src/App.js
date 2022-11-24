@@ -1,15 +1,18 @@
 import { connect } from 'react-redux'
 import { useEffect, useRef } from 'react'
 import { Container } from '@mui/material'
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, useMatch } from 'react-router-dom'
 
-import Blog from './components/Blog'
+// import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
-import NewBlogForm from './components/NewBlogForm'
+// import NewBlogForm from './components/NewBlogForm'
 import Notification from './components/Notification'
-import Togglable from './components/Togglable'
+// import Togglable from './components/Togglable'
 import Users from './components/Users'
 import User from './components/User'
+import Blogs from './components/Blogs'
+import BlogView from './components/BlogView'
+import Menu from './components/Menu'
 
 import { showNotification } from './reducers/notificationReducer'
 import {
@@ -24,17 +27,18 @@ import {
   setSignedInUser,
   removeSignedInUser
 } from './reducers/userReducer'
+import { initializeUsers } from './reducers/usersReducer'
 
 const App = props => {
   const blogFormRef = useRef()
 
   useEffect(() => {
     props.initializeBlogs()
-  }, [])
-
-  useEffect(() => {
+    props.initializeUsers()
     props.initializeUser()
   }, [])
+  const matchUser = useMatch('/users/:id')
+  const matchBlog = useMatch('/blogs/:id')
 
   const login = async (username, password) => {
     try {
@@ -99,33 +103,69 @@ const App = props => {
 
   return (
     <Container>
+      <Menu name={props.user.name} logout={logout} />
       <h2>blogs</h2>
 
       <Notification notification={props.notification} />
 
-      <div>
-        {props.user.name} logged in
+      {/* <div>
+        <div>{props.user.name} logged in</div>
         <button onClick={logout}>logout</button>
-      </div>
+      </div> */}
 
-      <Togglable buttonLabel='new note' ref={blogFormRef}>
-        <NewBlogForm onCreate={createBlog} />
-      </Togglable>
-
-      <div id='blogs'>
-        {props.blogs.map(blog => (
-          <Blog
-            key={blog.id}
-            blog={blog}
-            likeBlog={likeBlog}
-            removeBlog={removeBlog}
-            user={props.user}
-          />
-        ))}
-      </div>
-      <Users />
       <Routes>
-        <Route path='/users/:id' element={<User />} />
+        <Route
+          path='/'
+          element={
+            <Blogs
+              blogs={props.blogs}
+              likeBlog={likeBlog}
+              removeBlog={removeBlog}
+              user={props.user}
+              blogFormRef={blogFormRef}
+              createBlog={createBlog}
+            />
+          }
+        />
+        <Route
+          path='/blogs'
+          element={
+            <Blogs
+              blogs={props.blogs}
+              likeBlog={likeBlog}
+              removeBlog={removeBlog}
+              user={props.user}
+              blogFormRef={blogFormRef}
+              createBlog={createBlog}
+            />
+          }
+        />
+        <Route path='/users' element={<Users users={props.users} />} />
+        <Route
+          path='/users/:id'
+          element={
+            <User
+              user={
+                matchUser
+                  ? props.users.find(item => item.id === matchUser.params.id)
+                  : null
+              }
+            />
+          }
+        />
+        <Route
+          path='/blogs/:id'
+          element={
+            <BlogView
+              likeBlog={likeBlog}
+              blog={
+                matchBlog
+                  ? props.blogs.find(item => item.id === matchBlog.params.id)
+                  : null
+              }
+            />
+          }
+        />
       </Routes>
     </Container>
   )
@@ -135,7 +175,8 @@ const mapStateToProps = state => {
   return {
     notification: state.notification,
     blogs: state.blogs,
-    user: state.user
+    user: state.user,
+    users: state.users
   }
 }
 const mapDispatchToProps = {
@@ -147,6 +188,7 @@ const mapDispatchToProps = {
   updateLikeBlog,
   setSignedInUser,
   initializeUser,
+  initializeUsers,
   removeSignedInUser
 }
 

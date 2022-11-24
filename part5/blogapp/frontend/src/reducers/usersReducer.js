@@ -11,7 +11,7 @@ const usersReducer = createSlice({
   }
 })
 
-export const initialUsers = () => {
+export const initializeUsers = () => {
   return async dispatch => {
     const users = await usersService.getAll()
     dispatch(setUsers(users))
