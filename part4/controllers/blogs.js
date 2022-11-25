@@ -3,15 +3,19 @@ const Blog = require('../models/blog')
 const userExtractor = require('../utils/middleware').userExtractor
 
 blogRouter.get('/', async (request, response) => {
-  const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
+  const blogs = await Blog.find({})
+    .populate('user', { username: 1, name: 1 })
+    .populate('comments', { body: 1 })
   response.json(blogs)
 })
 
 blogRouter.get('/:id', async (request, response) => {
-  const blog = await Blog.findById(request.params.id).populate('user', {
-    username: 1,
-    name: 1
-  })
+  const blog = await Blog.findById(request.params.id)
+    .populate('user', {
+      username: 1,
+      name: 1
+    })
+    .populate('comments', { body: 1 })
 
   response.json(blog)
 })
@@ -49,7 +53,9 @@ blogRouter.put('/:id', userExtractor, async (request, response) => {
   }
   const savedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, {
     new: true
-  }).populate('user', { username: 1, name: 1 })
+  })
+    .populate('user', { username: 1, name: 1 })
+    .populate('comments', { body: 1 })
 
   response.json(savedBlog)
 })

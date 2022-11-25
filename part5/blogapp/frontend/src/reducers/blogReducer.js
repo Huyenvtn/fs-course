@@ -13,15 +13,28 @@ const blogSlice = createSlice({
     appendBlog(state, action) {
       state.push(action.payload)
     },
-    changeBlog(state, action) {
+    changeLikesBlog(state, action) {
       const id = action.payload
       const blogToChange = state.find(item => item.id === id)
+      console.log(blogToChange)
       const changedBlog = {
         ...blogToChange,
         likes: (blogToChange.likes || 0) + 1
       }
       return state
         .map(blog => (blog.id !== id ? blog : changedBlog))
+        .sort(byLikes)
+    },
+    addCommentToBlog(state, action) {
+      const id = action.payload.id
+      const blogToChange = action.payload.updatedBlog
+      console.log(blogToChange)
+      // const changedBlog = {
+      //   ...blogToChange,
+      //   comments: blogToChange.comments.concat(action.payload.comment)
+      // }
+      return state
+        .map(blog => (blog.id !== id ? blog : blogToChange))
         .sort(byLikes)
     },
     removeBlog(state, action) {
@@ -48,7 +61,14 @@ export const addBlog = blogObject => {
 export const updateLikeBlog = (id, updatedBlog) => {
   return async dispatch => {
     await blogService.update(id, updatedBlog)
-    dispatch(changeBlog(id))
+    dispatch(changeLikesBlog(id))
+  }
+}
+
+export const updateCommentsBlog = (id, commentObject) => {
+  return async dispatch => {
+    const updatedBlog = await blogService.addComment(id, commentObject)
+    dispatch(addCommentToBlog(id, updatedBlog))
   }
 }
 
@@ -59,7 +79,12 @@ export const deleteBlog = id => {
   }
 }
 
-export const { setBlogs, appendBlog, changeBlog, removeBlog } =
-  blogSlice.actions
+export const {
+  setBlogs,
+  appendBlog,
+  changeLikesBlog,
+  removeBlog,
+  addCommentToBlog
+} = blogSlice.actions
 
 export default blogSlice.reducer

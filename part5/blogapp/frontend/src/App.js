@@ -81,9 +81,9 @@ const App = props => {
     const liked = {
       ...toLike,
       likes: (toLike.likes || 0) + 1,
-      user: toLike.user ? toLike.user.id : ''
+      user: toLike.user ? toLike.user.id : '',
+      comments: toLike.comments.map(comment => comment.id)
     }
-
     props.updateLikeBlog(liked.id, liked)
     notify(`you liked '${liked.title}' by ${liked.author}`)
   }
