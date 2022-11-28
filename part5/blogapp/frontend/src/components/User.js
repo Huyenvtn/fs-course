@@ -2,7 +2,7 @@ const User = ({ user }) => {
   if (!user) {
     return null
   }
-  console.log(user.blogs)
+
   return (
     <div>
       <h3>{user.name}</h3>

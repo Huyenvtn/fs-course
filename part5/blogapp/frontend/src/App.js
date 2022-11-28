@@ -3,11 +3,8 @@ import { useEffect, useRef } from 'react'
 import { Container } from '@mui/material'
 import { Route, Routes, useMatch } from 'react-router-dom'
 
-// import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
-// import NewBlogForm from './components/NewBlogForm'
 import Notification from './components/Notification'
-// import Togglable from './components/Togglable'
 import Users from './components/Users'
 import User from './components/User'
 import Blogs from './components/Blogs'
@@ -107,11 +104,6 @@ const App = props => {
       <h2>blogs</h2>
 
       <Notification notification={props.notification} />
-
-      {/* <div>
-        <div>{props.user.name} logged in</div>
-        <button onClick={logout}>logout</button>
-      </div> */}
 
       <Routes>
         <Route

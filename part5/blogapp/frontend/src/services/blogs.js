@@ -31,7 +31,6 @@ const remove = id => {
 }
 
 const addComment = async (id, newObject) => {
-  console.log(newObject)
   const response = await axios.post(`${baseUrl}/${id}/comments`, newObject)
   return response.data
 }

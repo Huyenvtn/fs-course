@@ -16,7 +16,6 @@ const blogSlice = createSlice({
     changeLikesBlog(state, action) {
       const id = action.payload
       const blogToChange = state.find(item => item.id === id)
-      console.log(blogToChange)
       const changedBlog = {
         ...blogToChange,
         likes: (blogToChange.likes || 0) + 1
@@ -27,14 +26,17 @@ const blogSlice = createSlice({
     },
     addCommentToBlog(state, action) {
       const id = action.payload.id
-      const blogToChange = action.payload.updatedBlog
-      console.log(blogToChange)
-      // const changedBlog = {
-      //   ...blogToChange,
-      //   comments: blogToChange.comments.concat(action.payload.comment)
-      // }
+
+      const blogToChange = state.find(item => item.id === id)
+
+      const changedBlog = {
+        ...blogToChange,
+        comments: blogToChange.comments
+          ? blogToChange.comments.concat(action.payload.commentObject)
+          : [action.payload.commentObject]
+      }
       return state
-        .map(blog => (blog.id !== id ? blog : blogToChange))
+        .map(blog => (blog.id !== id ? blog : changedBlog))
         .sort(byLikes)
     },
     removeBlog(state, action) {
@@ -67,8 +69,8 @@ export const updateLikeBlog = (id, updatedBlog) => {
 
 export const updateCommentsBlog = (id, commentObject) => {
   return async dispatch => {
-    const updatedBlog = await blogService.addComment(id, commentObject)
-    dispatch(addCommentToBlog(id, updatedBlog))
+    await blogService.addComment(id, commentObject)
+    dispatch(addCommentToBlog({ id, commentObject }))
   }
 }
 

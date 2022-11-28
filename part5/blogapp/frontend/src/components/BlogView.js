@@ -1,4 +1,4 @@
-import { /*useEffect,*/ useState } from 'react'
+import { useState } from 'react'
 import { connect } from 'react-redux'
 
 import { showNotification } from '../reducers/notificationReducer'
@@ -35,10 +35,6 @@ const BlogView = props => {
       )
     }
   }
-
-  // useEffect(() => {
-  //   initializeBlogs()
-  // })
 
   return (
     <div>

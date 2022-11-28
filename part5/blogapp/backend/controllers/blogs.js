@@ -66,16 +66,13 @@ router.put('/:id', async (request, response) => {
   response.json(updatedBlog)
 })
 router.post('/:id/comments', async (request, response) => {
-  console.log(request.body)
   const comment = new Comment({ ...request.body })
   const savedComment = await comment.save()
-  console.log(savedComment)
   const blogToComment = await Blog.findById(request.params.id)
   if (!blogToComment) {
     return response.status(204).end()
   }
 
-  // blogToSave = { ...blogToComment, comments: blogToComment.comments ? blogToComment.comments.concat(savedComment._id) : [savedComment._id]}
   blogToComment.comments = blogToComment.comments
     ? blogToComment.comments.concat(savedComment._id)
     : [savedComment._id]
@@ -88,12 +85,6 @@ router.post('/:id/comments', async (request, response) => {
       name: 1
     })
 
-  // .populate([
-  //   { path: 'comment', select: 'body' },
-  //   { path: 'user', select: 'username' }
-  // ])
-
-  // let results = await OrderModel.find().populate([{path: 'user', select: 'firstname'}, {path: 'meal', select: 'name'}]);
   response.status(201).json(blogToReturn)
 })
 
